@@ -1,5 +1,5 @@
 // EngineeringDataModule
-namespace com.suncore; 
+namespace edm; 
 
 using { managed, sap, sap.common.CodeList } from '@sap/cds/common';
 type Cdgrp     :    String(15);
@@ -41,7 +41,7 @@ entity ZEDM_PFORMS {
 entity  ZENGDATA_DOCS {
 Mandt     :    String(3);
 key Tagno     :     Tagno;
-Item     :    Integer;
+key Item     :    Integer;
 Docno     :    String(40);
 Doctyp     :    String(10);
 Doctitle     :    String(132);
@@ -57,10 +57,9 @@ Htcirc     :    String(20);
 };
 //  ZENGDATA_LIN
 entity  ZENGDATA_LIN {
-key Tagno     :     Tagno;
-Etno     :    String(20);
-Linno     :    String(20);
-
+key Tagno     :    Association to ZENGDATA1;
+key Etno     :    String(20);
+key Linno     :    String(20);
 
 };
 //  ZENGDATA_NTS
@@ -91,6 +90,8 @@ Dater     :    DateTime;
 entity ZENGDATA1 {
     key Mandt : String(3);
     key Tagno     :    String(27);
+    lines  : Composition of many ZENGDATA_LIN on lines.Tagno = $self;
+
 Tgroup     :    String(30);
 Status     :    String(1);
 Tdesc     :    String(80);
@@ -142,6 +143,9 @@ Lal     :    String(3);
 Lall     :    String(3);
 Alhg     :    String(30);
 Alhg2     :    String(30);
+    data3    : Association to one ZENGDATA3;
+    data7    : Association to one ZENGDATA7;
+
  };
 // 2ZENGDATA
 
