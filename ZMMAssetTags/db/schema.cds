@@ -402,7 +402,7 @@ Dhngtyp     :    String(255);
 Dlocktyp     :    String(255);
 Dopentyp     :    String(255);
 
-};
+};   
 // ZENGDATA5
 
 entity  ZENGDATA5 {
