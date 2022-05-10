@@ -31,3 +31,5 @@ mta_archives/
 
 # auto generated wildcard
 ZMMAssetTags/db/.env
+# auto generated wildcard
+suncore/ZMMAssetTags/db/.env

@@ -11,88 +11,13 @@ type Cdgrpdsc     :    String(40);
 type Tgroup     :    String(30);
 type Frmname     :    String(30);
 type Frmdsc     :    String(30);
-type Tagno     :    String(27);
-
-entity ZEDF4_HEADER {
-  key Cdgrp : Cdgrp; 
-  Cdgrpdsc : Cdgrpdsc;
-  details  : Composition of many ZEDF4_DETAIL on details.Cdgrp = $self;
-};
-
-entity ZEDF4_DETAIL {
-    key Cdgrp : association to ZEDF4_HEADER;
-    key Code   : Code; 
-        Codedsc : Codedsc;
-        Codeltxt : Codeltxt;
-};
-
-entity ZEDTGROUPS {
-    key Tgroup : Tgroup;
-};
-
-entity ZEDM_PFORMS {
-    key Tgroup : Tgroup;
-        Frmname     :    Frmname; 
-        Frmdsc     :    Frmdsc;
- };
-
-// ZENGDATA_DOCS
-
-entity  ZENGDATA_DOCS {
-Mandt     :    String(3);
-key Tagno     :     Tagno;
-key Item     :    Integer;
-Docno     :    String(40);
-Doctyp     :    String(10);
-Doctitle     :    String(132);
-Comnt     :    String(40);
-
-};
-//  ZENGDATA_HTC
-entity  ZENGDATA_HTC {
-key Tagno     :     Tagno;
-Htcirc     :    String(20);
+type Tagno     : String(27);
 
 
-};
-//  ZENGDATA_LIN
-entity  ZENGDATA_LIN {
-key Tagno     :    Association to ZENGDATA1;
-key Etno     :    String(20);
-key Linno     :    String(20);
-
-};
-//  ZENGDATA_NTS
-entity  ZENGDATA_NTS {
-
-Mandt     :    String(3);
-key Tagno     :     Tagno;
-Note     :    String(4);
-
-
-};
-//  ZENGDATA_REV
-entity  ZENGDATA_REV {
-key Tagno     :     Tagno;
-Rev     :    String(3);
-Descr     :    String(40);
-Prep     :    String(3);
-Chk     :    String(3);
-App     :    String(3);
-Dater     :    DateTime;
-
-
-};
-
-
-//MAIN TABLES
-
-entity ZENGDATA1 {
-    key Mandt : String(3);
-    key Tagno     :    String(27);
-    lines  : Composition of many ZENGDATA_LIN on lines.Tagno = $self;
-
-Tgroup     :    String(30);
+entity ZENGDATA1_org {
+   Mandt : String(3);
+    key Tagno     :   Tagno;   
+Tgroup     :    Tgroup;
 Status     :    String(1);
 Tdesc     :    String(80);
 Area     :    String(30);
@@ -143,15 +68,152 @@ Lal     :    String(3);
 Lall     :    String(3);
 Alhg     :    String(30);
 Alhg2     :    String(30);
-    data3    : Association to one ZENGDATA3;
-    data7    : Association to one ZENGDATA7;
+ };
 
+entity ZEDF4_HEADER {
+  key Cdgrp : Cdgrp; 
+  Cdgrpdsc : Cdgrpdsc;
+  details  : Composition of many ZEDF4_DETAIL on details.Cdgrp = $self;
+};
+
+entity ZEDF4_DETAIL {
+    key Cdgrp : association to ZEDF4_HEADER;
+    key Code   : Code; 
+        Codedsc : Codedsc;
+        Codeltxt : Codeltxt;
+};
+
+entity ZEDTGROUPS {
+    key Tgroup : Tgroup;
+};
+
+entity ZEDM_PFORMS {
+    key Tgroup : Tgroup;
+        Frmname     :    Frmname; 
+        Frmdsc     :    Frmdsc;
+ };
+
+//  ZENGDATA_HTC
+entity  ZENGDATA_HTC {
+key Tagno     :     Association to ZENGDATA1a; 
+Htcirc     :    String(20);
+
+
+};
+
+//  ZENGDATA_NTS
+entity  ZENGDATA_NTS {
+Mandt     :    String(3);
+key Tagno     : Association to ZENGDATA1a;
+Note     :    String(4);
+
+};
+
+//  ZENGDATA_LINa
+entity  ZENGDATA_LINa {
+key Tagno     :     association to ZENGDATA1a;
+key Etno     :    String(20);
+key Linno     :    String(20);
+};
+
+// ZENGDATA_DOCS
+entity  ZENGDATA_DOCS {
+Mandt     :    String(3);
+key Tagno     :     association to ZENGDATA1a;
+key Item     :    Integer;
+Docno     :    String(40);
+Doctyp     :    String(10);
+Doctitle     :    String(132);
+Comnt     :    String(40);
+
+};
+
+//  ZENGDATA_REV
+entity  ZENGDATA_REV {
+key Tagno     :     association to ZENGDATA1a;
+key Rev     :    String(3);
+Descr     :    String(40);
+Prep     :    String(3);
+Chk     :    String(3);
+App     :    String(3);
+Dater     :    DateTime;
+};
+
+
+//MAIN TABLES
+//3,7,lin
+entity ZENGDATA1a {
+   Mandt : String(3);
+    key Tagno     :    Tagno;    
+    lines : Association to many ZENGDATA_LINa on lines.Tagno = $self;
+    docs : Composition of many ZENGDATA_DOCS on docs.Tagno = $self;
+    revs : Composition of many ZENGDATA_REV on revs.Tagno = $self;
+@assert.range
+Tgroup     :    Tgroup;
+Status     :    String(1);
+Tdesc     :    String(80);
+Area     :    String(30);
+Dlc     :    String(4);
+Disc     :    String(2);
+Fissue     :    String(15);
+Hosign     :    String(10);
+Impdat     :    DateTime;
+Itag     :    String(20);
+Licexp     :    DateTime;
+Ponum     :    String(30);
+Sapb     :    String(15);
+Tagrev     :    String(2);
+Tagsrc     :    String(30);
+Vendtag     :    String(25);
+Xissue     :    String(15);
+Ainsp     :    String(30);
+Apbdy     :    String(30);
+Gsgrp     :    String(30);
+Harea     :    String(30);
+Indep     :    String(255);
+Mantst     :    String(255);
+Protcl     :    String(30);
+Linesz     :    String(30);
+Rapid     :    String(255);
+Typgen     :    String(30);
+Vlvend     :    String(30);
+Wgtdry     :    String(8);
+Future     :    String(6);
+Hazflg     :    String(4);
+Ingrs     :    String(30);
+Lgflg     :    String(4);
+Manuf     :    String(30);
+Notifn     :    String(8);
+Model     :    String(255);
+Prtnum     :    String(30);
+Pvflg     :    String(4);
+Ppid     :    String(10);
+Prmthd     :    String(30);
+Sapflg     :    String(4);
+Serial     :    String(30);
+Suppl     :    String(30);
+Vlvflg     :    String(4);
+Wonum     :    String(8);
+Lah     :    String(3);
+Lahh     :    String(3);
+Lal     :    String(3);
+Lall     :    String(3);
+Alhg     :    String(30);
+Alhg2     :    String(30);
+    data2    : Association to one ZENGDATA2;
+     data3    : Association to one ZENGDATA3a;
+     data4    : Association to one ZENGDATA4;
+     data5    : Association to one ZENGDATA5;
+     data6    : Association to one ZENGDATA6;
+     data7    : Association to one ZENGDATA7a;
+     data8    : Association to one ZENGDATA8;
+     data9    : Association to one ZENGDATA9;
  };
 // 2ZENGDATA
 
 entity  ZENGDATA2 {
-key Mandt     :    String(3);
-key Tagno     :     Tagno;
+ Mandt     :    String(3);
+key Tagno     :     Association to ZENGDATA1a; //Tagno;
 Alhh     :    String(30);
 Allw     :    String(30);
 Allwl     :    String(30);
@@ -257,11 +319,11 @@ Fabarea     :    String(4);
 Fldcbl     :    String(30);
 
 };
-// ZENGDATA3
+// ZENGDATA3a
 
-entity  ZENGDATA3 {
-key Mandt     :    String(3);
-key Tagno     :     Tagno;
+entity  ZENGDATA3a {
+Mandt     :    String(3);
+key Tagno     :     Association to ZENGDATA1a; //Tagno;
 Frtag     :    String(30);
 Frloc     :    String(30);
 Frdsc3     :    String(255);
@@ -361,11 +423,11 @@ Lifeobs     :    Decimal(4,2);
 Majalm     :    String(10);
 
 };
-// ZENGDATA4
 
+// ZENGDATA4
 entity  ZENGDATA4 {
-key Mandt     :    String(3);
-key Tagno     :     Tagno;
+ Mandt     :    String(3);
+key Tagno     :     Association to ZENGDATA1a; //Tagno;
 Mattyp     :    String(30);
 Minalm     :    String(30);
 Modult     :    String(5);
@@ -402,12 +464,12 @@ Dhngtyp     :    String(255);
 Dlocktyp     :    String(255);
 Dopentyp     :    String(255);
 
-};   
+};
 // ZENGDATA5
 
 entity  ZENGDATA5 {
-key Mandt     :    String(3);
-key Tagno     :     Tagno;
+ Mandt     :    String(3);
+key Tagno     :     Association to ZENGDATA1a; //Tagno;
 Dstoptyp     :    String(132);
 Dutykw     :    Decimal(9,2);
 Dwsect     :    String(4);
@@ -498,8 +560,8 @@ Inltyp     :    String(90);
 // ZENGDATA6
 
 entity  ZENGDATA6 {
-key Mandt     :    String(3);
-key Tagno     :     Tagno;
+ Mandt     :    String(3);
+key Tagno     :     Association to ZENGDATA1a; //Tagno;
 Admrmk     :    String(132);
 Eqprmk     :    String(132);
 Liftrmk     :    String(132);
@@ -522,11 +584,12 @@ Outpipe     :    String(4);
 
 
 };
-// ZENGDATA7
 
-entity  ZENGDATA7 {
-key Mandt     :    String(3);
-key Tagno     :     Tagno;
+// ZENGDATA7a
+
+entity  ZENGDATA7a {
+Mandt     :    String(3);
+key Tagno     :     Association to ZENGDATA1a; //Tagno;
 Outlet     :    String(132);
 Clarif1     :    String(60);
 Clarif2     :    String(60);
@@ -611,8 +674,8 @@ Swl     :    String(15);
 // ZENGDATA8
 
 entity  ZENGDATA8 {
-key Mandt     :    String(3);
-key Tagno     :     Tagno;
+ Mandt     :    String(3);
+key Tagno     :     Association to ZENGDATA1a; //Tagno;
 Unid     :    String(30);
 Sptpsv     :    String(12);
 Equnrpsv     :    String(18);
@@ -669,10 +732,52 @@ Othdoc     :    String(120);
 
 };
 // ZENGDATA9
-
 entity  ZENGDATA9 {
-key Mandt     :    String(3);
-key Tagno     :     Tagno;
+ Mandt     :    String(3);
+key Tagno     :      Association to ZENGDATA1a; //Tagno;
+Vdesc     :    String(255);
+Pipcls     :    String(120);
+Eqfnr     :    String(30);
+Critical     :    String(4);
+
+};
+
+define view heat as
+    select from ZENGDATA3a left join ZENGDATA7a on ZENGDATA3a.Tagno=ZENGDATA7a.Tagno {
+        ZENGDATA3a.Tagno,
+ZENGDATA3a.Cbltyp,
+ZENGDATA3a.Pwrpt,
+ZENGDATA3a.Tmpmain,
+ZENGDATA7a.Linlgth,
+ZENGDATA7a.Piphtls, 
+ZENGDATA7a.Heatout 
+
+    };
+
+ define view v_select as
+    select from ZENGDATA1a  {
+Tagno,
+Tgroup,
+Status,
+Tdesc,
+Disc
+
+    };   
+
+entity m_ZENGDATA1 {
+ Mandt     :    String(3);
+    key Tagno     :    String(27);
+Tgroup     :    String(30);
+Status     :    String(1);
+Tdesc     :    String(80);
+Area     :    String(30);
+    tab9  : Association to m_ZENGDATA9; //  on tab9.Mandt = $self;
+
+    };   
+entity  m_ZENGDATA9 {
+ Mandt     :    String(3);
+  key Tagno     :     Association to m_ZENGDATA1; //Tagno;
+//key Tagno     :     Tagno;    
 Vdesc     :    String(255);
 Pipcls     :    String(120);
 Eqfnr     :    String(30);
